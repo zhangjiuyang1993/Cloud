@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bjtu.cloud.process.dao.ProcessDao" >
+  <resultMap id="BaseResultMap" type="com.bjtu.cloud.process.entity.Process" >
+    <id column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="pname" property="pname" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="dockerId" property="dockerid" jdbcType="INTEGER" />
+    <result column="cpu_percent" property="cpuPercent" jdbcType="DOUBLE" />
+    <result column="memory_used" property="memoryUsed" jdbcType="VARCHAR" />
+    <result column="memory_percent" property="memoryPercent" jdbcType="DOUBLE" />
+    <result column="disk_used" property="diskUsed" jdbcType="VARCHAR" />
+    <result column="disk_percent" property="diskPercent" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pid, pname, state, dockerId, cpu_percent, memory_used, memory_percent, disk_used, 
+    disk_percent
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bjtu.cloud.process.entity.ProcessExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from process
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from process
+    where pid = #{pid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from process
+    where pid = #{pid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bjtu.cloud.process.entity.ProcessExample" >
+    delete from process
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bjtu.cloud.process.entity.Process" >
+    insert into process (pid, pname, state, 
+      dockerId, cpu_percent, memory_used, 
+      memory_percent, disk_used, disk_percent
+      )
+    values (#{pid,jdbcType=INTEGER}, #{pname,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{dockerid,jdbcType=INTEGER}, #{cpuPercent,jdbcType=DOUBLE}, #{memoryUsed,jdbcType=VARCHAR}, 
+      #{memoryPercent,jdbcType=DOUBLE}, #{diskUsed,jdbcType=VARCHAR}, #{diskPercent,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bjtu.cloud.process.entity.Process" >
+    insert into process
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="pname != null" >
+        pname,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="dockerid != null" >
+        dockerId,
+      </if>
+      <if test="cpuPercent != null" >
+        cpu_percent,
+      </if>
+      <if test="memoryUsed != null" >
+        memory_used,
+      </if>
+      <if test="memoryPercent != null" >
+        memory_percent,
+      </if>
+      <if test="diskUsed != null" >
+        disk_used,
+      </if>
+      <if test="diskPercent != null" >
+        disk_percent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="pname != null" >
+        #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="dockerid != null" >
+        #{dockerid,jdbcType=INTEGER},
+      </if>
+      <if test="cpuPercent != null" >
+        #{cpuPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="memoryUsed != null" >
+        #{memoryUsed,jdbcType=VARCHAR},
+      </if>
+      <if test="memoryPercent != null" >
+        #{memoryPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="diskUsed != null" >
+        #{diskUsed,jdbcType=VARCHAR},
+      </if>
+      <if test="diskPercent != null" >
+        #{diskPercent,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bjtu.cloud.process.entity.ProcessExample" resultType="java.lang.Integer" >
+    select count(*) from process
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update process
+    <set >
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=INTEGER},
+      </if>
+      <if test="record.pname != null" >
+        pname = #{record.pname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.dockerid != null" >
+        dockerId = #{record.dockerid,jdbcType=INTEGER},
+      </if>
+      <if test="record.cpuPercent != null" >
+        cpu_percent = #{record.cpuPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="record.memoryUsed != null" >
+        memory_used = #{record.memoryUsed,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memoryPercent != null" >
+        memory_percent = #{record.memoryPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="record.diskUsed != null" >
+        disk_used = #{record.diskUsed,jdbcType=VARCHAR},
+      </if>
+      <if test="record.diskPercent != null" >
+        disk_percent = #{record.diskPercent,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update process
+    set pid = #{record.pid,jdbcType=INTEGER},
+      pname = #{record.pname,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER},
+      dockerId = #{record.dockerid,jdbcType=INTEGER},
+      cpu_percent = #{record.cpuPercent,jdbcType=DOUBLE},
+      memory_used = #{record.memoryUsed,jdbcType=VARCHAR},
+      memory_percent = #{record.memoryPercent,jdbcType=DOUBLE},
+      disk_used = #{record.diskUsed,jdbcType=VARCHAR},
+      disk_percent = #{record.diskPercent,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bjtu.cloud.process.entity.Process" >
+    update process
+    <set >
+      <if test="pname != null" >
+        pname = #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="dockerid != null" >
+        dockerId = #{dockerid,jdbcType=INTEGER},
+      </if>
+      <if test="cpuPercent != null" >
+        cpu_percent = #{cpuPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="memoryUsed != null" >
+        memory_used = #{memoryUsed,jdbcType=VARCHAR},
+      </if>
+      <if test="memoryPercent != null" >
+        memory_percent = #{memoryPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="diskUsed != null" >
+        disk_used = #{diskUsed,jdbcType=VARCHAR},
+      </if>
+      <if test="diskPercent != null" >
+        disk_percent = #{diskPercent,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where pid = #{pid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bjtu.cloud.process.entity.Process" >
+    update process
+    set pname = #{pname,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      dockerId = #{dockerid,jdbcType=INTEGER},
+      cpu_percent = #{cpuPercent,jdbcType=DOUBLE},
+      memory_used = #{memoryUsed,jdbcType=VARCHAR},
+      memory_percent = #{memoryPercent,jdbcType=DOUBLE},
+      disk_used = #{diskUsed,jdbcType=VARCHAR},
+      disk_percent = #{diskPercent,jdbcType=DOUBLE}
+    where pid = #{pid,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 自己添加 -->
+  <sql id="WhereClause">
+  	<if test="pname != null and pname != ''">
+  		and pname like '%${pname}%'
+  	</if>
+  	<if test="dockerid != null and dockerid != ''">
+  		and docker.dockerId = #{dockerid}
+  	</if>
+  	<if test="dockerExt != null">
+  	<if test="dockerExt.user != null and dockerExt.user != ''">
+  	<if test="dockerExt.user.userid != null and dockerExt.user.userid != ''">
+  		and user.userId = #{dockerExt.user.userid}
+  	</if> 
+  	</if>
+  	</if>
+  </sql>
+  
+  
+  <resultMap type="com.bjtu.cloud.process.entity.ProcessExt" id="processAndDockerRstMap">
+  	<!-- process信息 -->
+  	<id column="pid" property="pid"/>
+  	<result column="pname" property="pname"/>
+  	<result column="state" property="state"/>
+  	<result column="dockerId" property="dockerid"/>
+  	<result column="cpu_percent" property="cpuPercent"/>
+  	<result column="memory_used" property="memoryUsed"/>
+  	<result column="memory_percent" property="memoryPercent"/>
+  	<result column="disk_used" property="diskUsed"/>
+  	<result column="disk_percent" property="diskPercent"/>
+  	<!-- docker信息 -->
+  	<association property="dockerExt" javaType="com.bjtu.cloud.docker.entity.DockerExt">
+  		<id column="dockerId" property="dockerid"/>
+  		<result column="dockerName" property="dockername"/>
+  		<!-- user信息 -->
+  		<association property="user" javaType="com.bjtu.cloud.user.entity.User">
+  			<id column="userId" property="userid" />
+  			<result column="userName" property="username"/>
+  		</association>
+  	</association>
+  </resultMap>
+  <select id="findProcessAndDockerRstMap" parameterType="com.bjtu.cloud.process.entity.ProcessExt" resultMap="processAndDockerRstMap">
+  	select process.pid,
+  		process.pname,
+  		process.state,
+  		process.dockerId,
+  		process.cpu_percent,
+  		process.memory_used,
+  		process.memory_percent,
+  		process.disk_used,
+  		process.disk_percent,
+  		docker.dockerId dockerId,
+  		docker.dockerName,
+  		user.userId userId,
+  		user.userName 
+  		from process,docker,user
+  		<!-- where process.dockerId = docker.dockerId and docker.uid = user.userId -->
+  		<where>
+  			process.dockerId = docker.dockerId and docker.uid = user.userId
+  			<include refid="WhereClause"/>
+  		</where>
+  </select>
+  
+  
+</mapper>

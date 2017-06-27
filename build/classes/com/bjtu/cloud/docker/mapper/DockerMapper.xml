@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bjtu.cloud.docker.dao.DockerDao" >
+  <resultMap id="BaseResultMap" type="com.bjtu.cloud.docker.entity.Docker" >
+    <id column="dockerId" property="dockerid" jdbcType="INTEGER" />
+    <result column="dockerName" property="dockername" jdbcType="VARCHAR" />
+    <result column="dockerNumber" property="dockernumber" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="ipAddress" property="ipaddress" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    dockerId, dockerName, dockerNumber, uid, ipAddress
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bjtu.cloud.docker.entity.DockerExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from docker
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from docker
+    where dockerId = #{dockerid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from docker
+    where dockerId = #{dockerid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bjtu.cloud.docker.entity.DockerExample" >
+    delete from docker
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bjtu.cloud.docker.entity.Docker" >
+    insert into docker (dockerId, dockerName, dockerNumber, 
+      uid, ipAddress)
+    values (#{dockerid,jdbcType=INTEGER}, #{dockername,jdbcType=VARCHAR}, #{dockernumber,jdbcType=VARCHAR}, 
+      #{uid,jdbcType=INTEGER}, #{ipaddress,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bjtu.cloud.docker.entity.Docker" >
+    insert into docker
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dockerid != null" >
+        dockerId,
+      </if>
+      <if test="dockername != null" >
+        dockerName,
+      </if>
+      <if test="dockernumber != null" >
+        dockerNumber,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="ipaddress != null" >
+        ipAddress,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dockerid != null" >
+        #{dockerid,jdbcType=INTEGER},
+      </if>
+      <if test="dockername != null" >
+        #{dockername,jdbcType=VARCHAR},
+      </if>
+      <if test="dockernumber != null" >
+        #{dockernumber,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="ipaddress != null" >
+        #{ipaddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bjtu.cloud.docker.entity.DockerExample" resultType="java.lang.Integer" >
+    select count(*) from docker
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update docker
+    <set >
+      <if test="record.dockerid != null" >
+        dockerId = #{record.dockerid,jdbcType=INTEGER},
+      </if>
+      <if test="record.dockername != null" >
+        dockerName = #{record.dockername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dockernumber != null" >
+        dockerNumber = #{record.dockernumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=INTEGER},
+      </if>
+      <if test="record.ipaddress != null" >
+        ipAddress = #{record.ipaddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update docker
+    set dockerId = #{record.dockerid,jdbcType=INTEGER},
+      dockerName = #{record.dockername,jdbcType=VARCHAR},
+      dockerNumber = #{record.dockernumber,jdbcType=VARCHAR},
+      uid = #{record.uid,jdbcType=INTEGER},
+      ipAddress = #{record.ipaddress,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bjtu.cloud.docker.entity.Docker" >
+    update docker
+    <set >
+      <if test="dockername != null" >
+        dockerName = #{dockername,jdbcType=VARCHAR},
+      </if>
+      <if test="dockernumber != null" >
+        dockerNumber = #{dockernumber,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="ipaddress != null" >
+        ipAddress = #{ipaddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where dockerId = #{dockerid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bjtu.cloud.docker.entity.Docker" >
+    update docker
+    set dockerName = #{dockername,jdbcType=VARCHAR},
+      dockerNumber = #{dockernumber,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=INTEGER},
+      ipAddress = #{ipaddress,jdbcType=VARCHAR}
+    where dockerId = #{dockerid,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 自己添加 -->
+  
+  <sql id="WhereClause">
+  	<if test="dockerid != null and dockerid != ''">
+  		and dockerId = #{dockerid}
+  	</if>
+  </sql>
+  
+  <resultMap type="com.bjtu.cloud.docker.entity.DockerExt" id="dockerAndUserRstMap">
+  	<!-- docker信息 -->
+  	<id column="dockerId" property="dockerid"/>
+  	<result column="dockerName" property="dockername"/>
+  	<result column="dockerNumber" property="dockernumber"/>
+  	<result column="uid" property="uid"/>
+  	<result column="ipAddress" property="ipaddress"/>
+  	<!-- user信息 -->
+  	<association property="user" javaType="com.bjtu.cloud.user.entity.User">
+  		<id column="uid" property="userid"/>
+  		<result column="userName" property="username"/>
+  	</association>
+  </resultMap>
+  <select id="findDockerAndUserRstMap" parameterType="com.bjtu.cloud.docker.entity.DockerExt" resultMap="dockerAndUserRstMap">
+  	select docker.dockerId,
+  		docker.dockerName,
+  		docker.dockerNumber,
+  		docker.uid,
+  		docker.ipAddress,
+  		user.userName 
+  		from docker,user
+  		<!-- where docker.uid = user.userId; -->
+  		<where>
+  			docker.uid = user.userId
+  			<include refid="WhereClause"/>
+  		</where>
+  </select>
+  
+  
+  <resultMap type="com.bjtu.cloud.docker.entity.DockerExt" id="dockerAndProcessRstMap" extends="dockerAndUserRstMap">
+  	<!-- process信息 -->
+  	<collection property="processList" ofType="com.bjtu.cloud.process.entity.Process">
+  		<id column="pid" property="pid"/>
+  		<result column="pname" property="pname"/>
+  	</collection>
+  </resultMap>
+  <select id="findDockerAndProcessRstMap" parameterType="com.bjtu.cloud.docker.entity.DockerExt" resultMap="dockerAndProcessRstMap">
+  	select docker.dockerId,
+  		docker.dockerName,
+  		docker.dockerNumber,
+  		docker.uid,
+  		docker.ipAddress,
+  		user.userName,
+  		process.pid pid, 
+  		process.pname
+  		from docker,user,process
+  		<!-- where docker.uid = user.userId and docker.id = process.dockerId -->
+  		<where>
+  			docker.uid = user.userId and docker.id = process.dockerId
+  			<include refid="WhereClause"/>
+  		</where>
+  </select>
+  
+  
+</mapper>
